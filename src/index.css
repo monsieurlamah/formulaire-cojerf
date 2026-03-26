@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family:
+    Inter,
+    SF Pro Text,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  background:
+    linear-gradient(rgba(5, 16, 30, 0.68), rgba(5, 16, 30, 0.68)),
+    url("/event-poster.png") center 26% / min(100%, 1100px) auto no-repeat,
+    radial-gradient(circle at 15% 20%, #3fd9ff 0%, transparent 34%),
+    radial-gradient(circle at 82% 12%, #7e85ff 0%, transparent 35%),
+    radial-gradient(circle at 70% 85%, #43d9a4 0%, transparent 32%),
+    linear-gradient(145deg, #081425 0%, #102b4a 45%, #154a66 100%);
+  background-blend-mode: normal, normal, screen, screen, screen, normal;
+  background-attachment: scroll, scroll, fixed, fixed, fixed, fixed;
+  color: #ffffff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+@media (max-width: 1024px) {
+  body {
+    background:
+      linear-gradient(rgba(5, 16, 30, 0.7), rgba(5, 16, 30, 0.7)),
+      url("/event-poster.png") center 18% / 135% auto no-repeat,
+      radial-gradient(circle at 14% 18%, #3fd9ff 0%, transparent 34%),
+      radial-gradient(circle at 82% 10%, #7e85ff 0%, transparent 35%),
+      radial-gradient(circle at 70% 85%, #43d9a4 0%, transparent 32%),
+      linear-gradient(145deg, #081425 0%, #102b4a 45%, #154a66 100%);
+    background-attachment: scroll;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    background:
+      linear-gradient(rgba(5, 16, 30, 0.78), rgba(5, 16, 30, 0.78)),
+      url("/event-poster.png") center top / 170% auto no-repeat,
+      radial-gradient(circle at 12% 12%, #3fd9ff 0%, transparent 35%),
+      radial-gradient(circle at 88% 8%, #7e85ff 0%, transparent 34%),
+      linear-gradient(160deg, #081425 0%, #102b4a 45%, #154a66 100%);
+  }
+}
