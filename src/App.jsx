@@ -3,6 +3,7 @@ import './App.css'
 
 const APPS_SCRIPT_URL =
   'https://script.google.com/macros/s/AKfycbw1WZsVHzdQVi8NgasmXPy-TPKjSuvyN9cK__LSmp_aJnA7NJ9dktfeoAZNN-OqnOYM/exec'
+const FORM_ENDPOINT = import.meta.env.PROD ? '/api/inscriptions' : APPS_SCRIPT_URL
 const INSCRIPTIONS_KEY = 'cojerf_inscriptions_uniques'
 
 function nettoyerTelephone(telephone) {
@@ -96,9 +97,9 @@ function App() {
       setMessage('')
       setTypeMessage('')
 
-      const reponse = await fetch(APPS_SCRIPT_URL, {
+      const reponse = await fetch(FORM_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
       const texteReponse = await reponse.text()
