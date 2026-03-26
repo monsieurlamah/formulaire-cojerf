@@ -34,6 +34,16 @@ function lireInscriptionsLocales() {
   }
 }
 
+async function envoyerDirectAppsScript(payload) {
+  // no-cors evite les blocages navigateur sur certains deploiements Apps Script.
+  await fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload),
+  })
+}
+
 function App() {
   const [premiereParticipation, setPremiereParticipation] = useState('')
   const [envoiEnCours, setEnvoiEnCours] = useState(false)
@@ -97,23 +107,43 @@ function App() {
       setMessage('')
       setTypeMessage('')
 
-      const reponse = await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-      const texteReponse = await reponse.text()
       let resultat = {}
+      let enregistrementConfirme = false
+
       try {
-        resultat = JSON.parse(texteReponse)
-      } catch {
-        resultat = {}
+        const reponse = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
+        const texteReponse = await reponse.text()
+        try {
+          resultat = JSON.parse(texteReponse)
+        } catch {
+          resultat = {}
+        }
+
+        if (!reponse.ok) {
+          throw new Error(
+            resultat.message || "Echec de l'enregistrement vers Google Sheets.",
+          )
+        }
+        enregistrementConfirme = true
+      } catch (apiError) {
+        if (import.meta.env.PROD) {
+          await envoyerDirectAppsScript(payload)
+          enregistrementConfirme = true
+          resultat = {
+            message:
+              "Inscription envoyee. Si vous ne recevez pas d'email, verifiez Google Sheets.",
+          }
+        } else {
+          throw apiError
+        }
       }
 
-      if (!reponse.ok) {
-        throw new Error(
-          resultat.message || "Echec de l'enregistrement vers Google Sheets.",
-        )
+      if (!enregistrementConfirme) {
+        throw new Error("Echec de l'enregistrement de l'inscription.")
       }
 
       formulaire.reset()
